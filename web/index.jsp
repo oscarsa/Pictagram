@@ -188,7 +188,8 @@
                     }
                 %>
                 <%=nickErrorRegistro%>
-                <input type="text" class="form-control form-white" placeholder="Nick" <%=nickRegistro%> />
+                <input type="text" class="form-control form-white" id="registroNick" placeholder="Nick"
+                        <%=nickRegistro%> />
                 <%
                     if (emailHayErrorRegistro) {
                         emailRegistro = "style='background-color:red' placeholder='Email'";
@@ -197,7 +198,7 @@
                     }
                 %>
                 <%=emailErrorRegistro%>
-                <input type="text" class="form-control form-white" placeholder="Email" <%=emailRegistro%> />
+                <input type="text" class="form-control form-white" id="registroEmail" placeholder="Email" <%=emailRegistro%> />
                 <%
                     if (contrasenyaHayErrorRegistro) {
                         contrasenyaRegistro = "style='background-color:red' placeholder='Contraseña'";
@@ -206,7 +207,8 @@
                     }
                 %>
                 <%=contrasenyaErrorRegistro%>
-                <input type="password" class="form-control form-white" placeholder="Contraseña" <%=contrasenyaRegistro%>/>
+                <input type="password" class="form-control form-white" id="registroContrasenya"
+                       placeholder="Contraseña" <%=contrasenyaRegistro%>/>
                 <div class="checkbox-holder text-left">
                     <div class="checkbox">
                         <input type="checkbox" value="None" id="squaredOne" name="check"/>
@@ -224,8 +226,8 @@
             <a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
             <h3 class="white">Login</h3>
             <form action="" class="popup-form" method="post" action="Login.do">
-                <input type="text" class="form-control form-white" placeholder="Email">
-                <input type="password" class="form-control form-white" placeholder="Contraseña">
+                <input type="text" class="form-control form-white" id="loginEmail" placeholder="Email">
+                <input type="password" class="form-control form-white" id="loginContrasenya" placeholder="Contraseña">
 
                 <button type="submit" class="btn btn-submit" value="login">Entrar</button>
             </form>
