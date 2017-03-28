@@ -1,4 +1,4 @@
-package es.unizar.asig30245;
+package controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
