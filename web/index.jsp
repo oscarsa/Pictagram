@@ -179,7 +179,7 @@
         <div class="modal-content modal-popup">
             <a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
             <h3 class="white">Registro</h3>
-            <form action="" class="popup-form" method="post" action="Registro.do" >
+            <form class="popup-form" method="post" action="Registro.do" >
                 <%
                     if (nickHayErrorRegistro) {
                         nickRegistro = "style='background-color:red' placeholder='Nick'";
@@ -225,7 +225,7 @@
         <div class="modal-content modal-popup">
             <a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
             <h3 class="white">Login</h3>
-            <form action="" class="popup-form" method="post" action="Login.do">
+            <form class="popup-form" method="post" action="Login.do">
                 <input type="text" class="form-control form-white" id="loginEmail" placeholder="Email">
                 <input type="password" class="form-control form-white" id="loginContrasenya" placeholder="Contraseña">
 
