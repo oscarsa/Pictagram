@@ -33,45 +33,22 @@ public class LoginServlet extends HttpServlet {
         try {
             InitialContext ctx = new InitialContext();
             Context env = (Context) ctx.lookup("java:comp/env");
-            // nombre del recurso en el context.xml
+            // Nombre del recurso en el context.xml
             ds = (DataSource) env.lookup("jdbc/ConexionMySQL");
         } catch (NamingException e) {
             e.printStackTrace();
         }
     }
 
-
-
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         //response.sendRedirect("ok.html");
 
+        //Establece codificación para los datos recibidos, para procesar bien carácteres especiales
+        request.setCharacterEncoding("UTF-8");
+
         PrintWriter out = response.getWriter();
 
-        String sql = "SELECT * FROM Usuarios";
-        try {
-            con = ds.getConnection();
-            PreparedStatement pstm = con.prepareStatement(sql);
-            ResultSet rset = pstm.executeQuery();
-            System.out.println("NICK | EMAIL | CONTRASEÑA ");
-            while (rset.next()) {
-
-                System.out.println(rset.getInt(1)+" | "+rset.getString(2)+" | "+rset.getString(3));
-            }
-
-            //response.sendRedirect("ok.html");
-
-        } catch (SQLException e) {
-            //response.sendRedirect("error.html");
-            e.printStackTrace(System.err);
-            out.println("Stack Trace:<br/>");
-            out.println("<br/><br/>Stack Trace (for web display):</br>");
-            out.println(displayErrorForWeb(e));
-        }
-
-
-/*
         boolean error=false;
         String email= (request.getParameter("loginEmail")).trim();
 
@@ -84,60 +61,91 @@ public class LoginServlet extends HttpServlet {
             email="";
             error=true;
         }
+
         String contrasenya = (request.getParameter("loginContrasenya")).trim();
+
         if(contrasenya==null || contrasenya.equals(new String(""))){
             contrasenya="";
             error=true;
         }
+
+        //TODO Falta devolver errores y campos inválidos cuando el usuario hace login
         //Para indicar si hay error
         String messaggeError = "";
 
 
+        if(!error)
+        {
+            out.println("Email: "+email);
+            out.println("Contraseña: "+contrasenya);
+            out.println("LOGIN:"+login(email,contrasenya));
+        }
+        else
+        {
+            out.println("ERROR, campo no válido");
+            out.println("Email: "+email);
+            out.println("Contraseña: "+contrasenya);
+        }
 
 
+    }
+
+    private boolean login(String email, String pass)
+    {
 
 
+       String sql = "SELECT nickname, email, contra " +
+                "FROM Usuarios WHERE email ='"+email+"' AND contra ='"+pass+"'";
 
-        //TODO Unir servlet con Facade cuando esté creado
+       try
+       {
+           con = ds.getConnection();
+           PreparedStatement pstm = con.prepareStatement(sql);
+           ResultSet rset = pstm.executeQuery();
+
+           if (rset.next()) {
+               //Login válido
+               return true;
+           } else {
+               //Login inválido
+               return false;
+           }
+
+       }
+       catch (SQLException e)
+       {
+           e.printStackTrace();
+           return true;
+
+       }
         /*
-        CompradorVO c = new CompradorVO();
-        VendedorVO v = new VendedorVO();
-        int usuario = 0;
-        int id=0;
-        String tipo = "";
-        if(!error){
-            try{
-                MarketplaceFacade fachada = new MarketplaceFacade();
-                c = fachada.loginComprador(email,contrasenya);
-                usuario=1;
-                id=c.getid();
-                tipo="comprador";
-            }catch (Exception e){
-                try{
-                    MarketplaceFacade fachada = new MarketplaceFacade();
-                    v = fachada.loginVendedor(email,contrasenya);
-                    usuario=2;
-                    id=v.getid();
-                    tipo = "vendedor";
-                }catch (Exception e1){
-                    e1.printStackTrace(System.err);
-                }
-            }
-        }
-        if(usuario==0){
-            messaggeError= "Los datos del usuario son incorrectos";
-            request.setAttribute("error",error);
-            request.setAttribute("messaggeError",messaggeError);
-            request.getRequestDispatcher("login.jsp").forward(request,response);
-        }
-        else{
-            response.sendRedirect("modificarComprador.jsp?id="+id+"&tipo="+tipo);
-        }
+        sql = "SELECT  FROM Usuarios";
+        try {
+            con = ds.getConnection();
+            PreparedStatement pstm = con.prepareStatement(sql);
+            ResultSet rset = pstm.executeQuery();
+            System.out.println("NICK | EMAIL | CONTRASEÑA ");
+            while (rset.next()) {
 
+                System.out.println(rset.getString(1)+" | "+rset.getString(2)+" | "+rset.getString(3));
+                System.out.println(rset.getString(1));
+                System.out.println(rset.getString(2));
+                System.out.println(rset.getString(3));
+            }
+
+            //response.sendRedirect("ok.html");
+
+        } catch (SQLException e) {
+            //response.sendRedirect("error.html");
+            e.printStackTrace(System.err);
+            System.out.println("Stack Trace:<br/>");
+            System.out.println("<br/><br/>Stack Trace (for web display):</br>");
+            System.out.println(displayErrorForWeb(e));
+        }
         */
     }
 
-    public static boolean validateEmail(String email) {
+    private static boolean validateEmail(String email) {
         // Compiles the given regular expression into a pattern.
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
@@ -145,13 +153,5 @@ public class LoginServlet extends HttpServlet {
         // Match the given input against this pattern
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
-    }
-
-    public String displayErrorForWeb(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        String stackTrace = sw.toString();
-        return stackTrace.replace(System.getProperty("line.separator"), "<br/>\n");
     }
 }

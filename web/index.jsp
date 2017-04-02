@@ -226,8 +226,10 @@
             <a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
             <h3 class="white">Login</h3>
             <form class="popup-form" method="post" action="Login.do">
-                <input type="text" class="form-control form-white" id="loginEmail" placeholder="Email">
-                <input type="password" class="form-control form-white" id="loginContrasenya" placeholder="Contraseña">
+                <input type="text" class="form-control form-white" id="loginEmail" name="loginEmail"
+                       placeholder="Email">
+                <input type="password" class="form-control form-white" id="loginContrasenya"
+                       name="loginContrasenya" placeholder="Contraseña">
 
                 <button type="submit" class="btn btn-submit" value="login">Entrar</button>
             </form>
