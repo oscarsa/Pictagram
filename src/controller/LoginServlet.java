@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
 
         //response.sendRedirect("ok.html");
 
-        //Establece codificación para los datos recibidos, para procesar bien carácteres especiales
+        //Establece codificación para los data recibidos, para procesar bien carácteres especiales
         request.setCharacterEncoding("UTF-8");
 
         PrintWriter out = response.getWriter();
@@ -78,7 +78,12 @@ public class LoginServlet extends HttpServlet {
         {
             out.println("Email: "+email);
             out.println("Contraseña: "+contrasenya);
-            out.println("LOGIN:"+login(email,contrasenya));
+            boolean loginCorrecto = login(email,contrasenya);
+            if(loginCorrecto) {
+                out.println("El login ha sido CORRECTO");
+            } else {
+                out.println("El login ha sido INCORRECTO");
+            }
         }
         else
         {

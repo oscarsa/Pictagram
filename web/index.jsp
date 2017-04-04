@@ -188,7 +188,8 @@
                     }
                 %>
                 <%=nickErrorRegistro%>
-                <input type="text" class="form-control form-white" id="registroNick" placeholder="Nick"
+                <input type="text" class="form-control form-white" id="registroNick" name="registroNick"
+                       placeholder="Nick"
                         <%=nickRegistro%> />
                 <%
                     if (emailHayErrorRegistro) {
@@ -198,7 +199,8 @@
                     }
                 %>
                 <%=emailErrorRegistro%>
-                <input type="text" class="form-control form-white" id="registroEmail" placeholder="Email" <%=emailRegistro%> />
+                <input type="text" class="form-control form-white" id="registroEmail" name="registroEmail"
+                       placeholder="Email" <%=emailRegistro%> />
                 <%
                     if (contrasenyaHayErrorRegistro) {
                         contrasenyaRegistro = "style='background-color:red' placeholder='Contraseña'";
@@ -208,10 +210,11 @@
                 %>
                 <%=contrasenyaErrorRegistro%>
                 <input type="password" class="form-control form-white" id="registroContrasenya"
+                       name="registroContrasenya"
                        placeholder="Contraseña" <%=contrasenyaRegistro%>/>
                 <div class="checkbox-holder text-left">
                     <div class="checkbox">
-                        <input type="checkbox" value="None" id="squaredOne" name="check"/>
+                        <input type="checkbox" value="None" id="condiciones" name="condiciones" name="check"/>
                         <label for="squaredOne"><span>Acepto los <strong>Términos y Condiciones</strong></span></label>
                     </div>
                 </div>

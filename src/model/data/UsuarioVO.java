@@ -1,4 +1,4 @@
-package model;
+package model.data;
 
 /**
  * Created by oscar on 28/03/17.
