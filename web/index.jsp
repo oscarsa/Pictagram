@@ -36,9 +36,15 @@
     <link rel="stylesheet" type="text/css" href="../css/cardio.css">
 </head>
 
-<body>
+<body onload="abrirDialogo()">
 
 <%
+
+    //Variables para abrir dialogos login/registro tras un error
+    boolean abrirLogin = false;
+    boolean abrirRegistro = false;
+
+
     ////////////////////
     //Parámetros Login//
     ////////////////////
@@ -48,12 +54,17 @@
     String mensajeErrorLogin = "";
     boolean loginError = false;
 
-    if (request.getParameter("loginError") != null) {
+    if (request.getAttribute("loginError") != null) {
         loginError = true;
     }
 
-    if (request.getParameter("mensajeErrorLogin") != null) {
-        mensajeErrorLogin = (String) request.getParameter("mensajeErrorLogin");
+    if (request.getAttribute("mensajeErrorLogin") != null) {
+        mensajeErrorLogin = (String) request.getAttribute("mensajeErrorLogin");
+    }
+
+    if (request.getAttribute("abrirLogin")!=null) {
+
+        abrirLogin = true;
     }
 
     ///////////////////////
@@ -74,12 +85,12 @@
     String nickErrorRegistro = "";
     String emailErrorRegistro = "";
     String contrasenyaErrorRegistro = "";
+    String mensajeErrorRegistro = "";
 
     //Errores
     boolean nickHayErrorRegistro = false;
     boolean emailHayErrorRegistro = false;
     boolean contrasenyaHayErrorRegistro = false;
-
 
     HashMap<String, String> errores = (HashMap) request.getAttribute("errores");
     HashMap<String, String> correcto = (HashMap) request.getAttribute("correcto");
@@ -108,7 +119,13 @@
         } else {
             contrasenyaRegistroOK = correcto.get("contrasenya");
         }
+
+        if (errores.containsKey("abrirRegistro")) {
+            abrirRegistro = true;
+            mensajeErrorRegistro = errores.get("abrirRegistro");
+        }
     }
+
 %>
 <!------------------------->
 
@@ -127,7 +144,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><i class="white fa fa-instagram fa-5x"></i></a>
+            <a class="navbar-brand" href="index.jsp"><i class="white fa fa-instagram fa-5x"></i></a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -180,6 +197,13 @@
             <a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
             <h3 class="white">Registro</h3>
             <form class="popup-form" method="post" action="Registro.do" >
+
+                <%
+                    if (abrirRegistro) {
+                        mensajeErrorRegistro = "<p class='alert alert-danger'>"+mensajeErrorRegistro+"</p>";
+                    }
+                %>
+                <%=mensajeErrorRegistro%>
                 <%
                     if (nickHayErrorRegistro) {
                         nickRegistro = "style='background-color:red' placeholder='Nick'";
@@ -229,6 +253,12 @@
             <a href="#" class="close-link"><i class="icon_close_alt2"></i></a>
             <h3 class="white">Login</h3>
             <form class="popup-form" method="post" action="Login.do">
+                <%
+                    if (abrirLogin) {
+                        mensajeErrorLogin = "<p class='alert alert-danger'>"+mensajeErrorLogin+"</p>";
+                    }
+                %>
+                <%=mensajeErrorLogin%>
                 <input type="text" class="form-control form-white" id="loginEmail" name="loginEmail"
                        placeholder="Email">
                 <input type="password" class="form-control form-white" id="loginContrasenya"
@@ -261,6 +291,28 @@
     </ul>
     <a href="#" class="close-link"><i class="arrow_up"></i></a>
 </div>
+<!--Javascript-->
+<script>
+    function abrirDialogo() {
+        var abrirLogin = "<%=abrirLogin%>";
+        var abrirRegistro = "<%=abrirRegistro%>";
+        var mensajeErrorLogin = "<%=mensajeErrorLogin%>";
+        var mensajeErrorRegistro = "<%=mensajeErrorRegistro%>";
+
+        console.log("Login: "+abrirLogin);
+        console.log("Registro: "+abrirRegistro);
+        console.log("Mensaje Login: "+mensajeErrorLogin);
+        console.log("Mensaje Registro: "+mensajeErrorRegistro);
+
+        if(abrirLogin == 'true') {
+            $("#modalLogin").modal();
+
+        } else if(abrirRegistro == 'true') {
+            $("#modalRegistro").modal();
+
+        }
+    }
+</script>
 <!-- Scripts -->
 <script src="../js/jquery-1.11.1.min.js"></script>
 <script src="../js/owl.carousel.min.js"></script>

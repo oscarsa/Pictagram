@@ -1,7 +1,6 @@
 package controller;
 
-import model.data.UsuarioVO;
-import model.gateway.UsuarioDAO;
+import model.UsuarioDAO;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -16,8 +15,6 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -29,9 +26,9 @@ import java.util.regex.Pattern;
 @WebServlet(name = "RegistroServlet")
 public class RegistroServlet extends HttpServlet {
 
-    private Connection con;
     private DataSource ds;
 
+    //TODO esto va a los DAO y compartido en otra clase entre todos
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -45,141 +42,89 @@ public class RegistroServlet extends HttpServlet {
         }
     }
 
-
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         HashMap<String, String> errores = new HashMap<String, String>(); //Para recopilar los errores
-        HashMap <String, String> correcto = new HashMap<String, String>(); //Para recopilar los data bien introducidos
+        HashMap<String, String> correcto = new HashMap<String, String>(); //Para recopilar los data bien introducidos
+        String email, nick, contrasenya;
+        boolean error = false;
+        PrintWriter out = response.getWriter();
 
         //Establece codificación para los data recibidos, para procesar bien carácteres especiales
         request.setCharacterEncoding("UTF-8");
 
-        PrintWriter out = response.getWriter();
-
-        boolean error=false;
-        String email= (request.getParameter("registroEmail")).trim();
-
-
-        if(email==null ||email.equals(new String(""))){
-            errores.put("email","Introduzca email");
-            error=true;
-        }
-        else if(!validateEmail(email)){
-            errores.put("email","Email err&#243neo");
-            error=true;
-        }
-        else{
-            correcto.put("email",email);
+        //Valida email
+        email = (request.getParameter("registroEmail")).trim();
+        if (email == null || email.equals(new String(""))) {
+            errores.put("email", "Introduzca email");
+            error = true;
+        } else if (!validateEmail(email)) {
+            errores.put("email", "Email err&#243neo");
+            error = true;
+        } else {
+            correcto.put("email", email);
         }
 
-        //TODO Verificar nick en la BD
-
-        String nick = (request.getParameter("registroNick")).trim();
-        if(nick==null || nick.equals(new String(""))){
-            errores.put("nick","Introduzca el nick");
-            error=true;
-        }
-        else{
-            correcto.put("nick",nick);
+        //Valida nick
+        nick = (request.getParameter("registroNick")).trim();
+        if (nick == null || nick.equals(new String(""))) {
+            errores.put("nick", "Introduzca el nick");
+            error = true;
+        } else {
+            correcto.put("nick", nick);
         }
 
-        String contrasenya = request.getParameter("registroContrasenya");
-        if(contrasenya==null || contrasenya.equals(new String(""))){
-            errores.put("contrasenya","Escriba la contrase&ntilde;a");
-            error=true;
-        }
-        else{
-            correcto.put("contrasenya",contrasenya);
+        //Valida contraseña
+        contrasenya = request.getParameter("registroContrasenya");
+        if (contrasenya == null || contrasenya.equals(new String(""))) {
+            errores.put("contrasenya", "Escriba la contrase&ntilde;a");
+            error = true;
+        } else {
+            correcto.put("contrasenya", contrasenya);
         }
 
         //Procedemos a intentar el registro si no ha habido errores
-        if(!error) {
+        if (!error) {
             try {
-                con = ds.getConnection();
-                UsuarioDAO usuarioDAO = new UsuarioDAO(con);
+                UsuarioDAO usuarioDAO = new UsuarioDAO(ds);
 
-                if(usuarioDAO.existeNick(nick)) {
+                if (usuarioDAO.existeNick(nick)) {
                     //Nick existe, no se puede registrar
-                    out.println("Nick: "+nick+" - Nick ya existente, pruebe con otro");
+                    out.println("Nick: " + nick + " - Nick ya existente, pruebe con otro");
+                    errores.put("abrirRegistro", "El nick utilizado ya se encuentra registrado, por favor elija uno " +
+                            "diferente");
+                    request.setAttribute("errores",errores);
+                    request.setAttribute("correcto",correcto);
+                    request.getRequestDispatcher("index.jsp").forward(request,response);
                 } else {
                     //Nick no existe
-                    out.println("Nick: "+nick+" - Procedemos al registro...");
-                    boolean registroCorrecto =  usuarioDAO.registrarUsuario(nick,email,contrasenya);
-                    if(registroCorrecto) {
+                    out.println("Nick: " + nick + " - Procedemos al registro...");
+                    boolean registroCorrecto = usuarioDAO.registrarUsuario(nick, email, contrasenya);
+                    if (registroCorrecto) {
                         out.println("...el registro se ha realizado CORRECTAMENTE!");
                     } else {
-                        out.println("...el registro ha sido erróneo");
+                        //out.println("...el registro ha sido erróneo");
+                        errores.put("abrirRegistro", "Error, no se ha podido realizar el registro");
+                        request.setAttribute("errores",errores);
+                        request.setAttribute("correcto",correcto);
+                        request.getRequestDispatcher("index.jsp").forward(request,response);
                     }
                 }
-
-
-            }  catch (SQLException e)
-            {
+            } catch (SQLException e) {
                 //e.printStackTrace();
                 out.println("ERROR");
-
             }
         } else {
+            errores.put("abrirRegistro", "Uno o más campos son inválidos");
             //Algún campo no es correcto
-            out.println("Algún campo no es correcto");
-        }
-
-
-
-
-
-/*
-        if (!error){
-
-            VendedorVO v = new VendedorVO(nombreEmpresa,cif,email,direccion,Integer.parseInt(telefono),contrasenya);
-
-            //Para mostrar errores correctamente
-            PrintWriter out = response.getWriter();
-
-            try{
-                MarketplaceFacade fachada = new MarketplaceFacade();
-                fachada.crearVendedor(v);
-                response.sendRedirect("exito.html");
-            }catch (Exception e){
-                e.printStackTrace(System.err);
-                out.println("Stack Trace:<br/>");
-                out.println("<br/><br/>Stack Trace (for web display):</br>");
-                out.println(displayErrorForWeb(e));
-            }
-
-        }
-        else{
+            //out.println("Algún campo no es correcto");
             request.setAttribute("errores",errores);
             request.setAttribute("correcto",correcto);
             request.getRequestDispatcher("index.jsp").forward(request,response);
         }
-*/
     }
-/*
-    private boolean nickValido(String nick) {
-        String sql = "SELECT nickname WHERE nickname = '"+nick+"'";
 
-        try {
-            con = ds.getConnection();
-            PreparedStatement pstm = con.prepareStatement(sql);
-            ResultSet rset = pstm.executeQuery();
-
-            if (rset.next()) {
-                //Nick encontrado, no es posible el nuevo registro con ese nick
-                return false;
-            } else {
-                //Nick no encontrado, es posible registrar el nuevo nick
-                return true;
-            }
-        }  catch (SQLException e)
-        {
-            e.printStackTrace();
-            return true;
-        }
-    }
-*/
-
-    public static boolean validateEmail(String email) {
+    private static boolean validateEmail(String email) {
 
         // Compiles the given regular expression into a pattern.
         Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
@@ -189,6 +134,5 @@ public class RegistroServlet extends HttpServlet {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
 
 }

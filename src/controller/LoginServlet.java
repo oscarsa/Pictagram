@@ -1,5 +1,7 @@
 package controller;
 
+import model.UsuarioDAO;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -24,7 +26,6 @@ import java.util.regex.Pattern;
 @WebServlet(name = "LoginServlet")
 public class LoginServlet extends HttpServlet {
 
-    private Connection con;
     private DataSource ds;
 
     @Override
@@ -41,8 +42,6 @@ public class LoginServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        //response.sendRedirect("ok.html");
 
         //Establece codificación para los data recibidos, para procesar bien carácteres especiales
         request.setCharacterEncoding("UTF-8");
@@ -69,85 +68,33 @@ public class LoginServlet extends HttpServlet {
             error=true;
         }
 
-        //TODO Falta devolver errores y campos inválidos cuando el usuario hace login
         //Para indicar si hay error
-        String messaggeError = "";
+        String messaggeError = "Este es el mensaje de error que se le mostrará al usuario";
 
-
-        if(!error)
-        {
+        if(error){
+            messaggeError= "Email o contraseña inválidos, revise los datos introducidos";
+            request.setAttribute("loginError",error);
+            request.setAttribute("mensajeErrorLogin",messaggeError);
+            request.setAttribute("abrirLogin",true);
+            request.getRequestDispatcher("index.jsp").forward(request,response);
+        }
+        else{
+            //response.sendRedirect("modificarComprador.jsp?id="+id+"&tipo="+tipo);
             out.println("Email: "+email);
             out.println("Contraseña: "+contrasenya);
-            boolean loginCorrecto = login(email,contrasenya);
+
+            UsuarioDAO usuarioDAO = new UsuarioDAO(ds);
+            boolean loginCorrecto = usuarioDAO.login(email,contrasenya);
             if(loginCorrecto) {
                 out.println("El login ha sido CORRECTO");
             } else {
-                out.println("El login ha sido INCORRECTO");
+                messaggeError= "Los datos de login son incorrectos, inténtelo de nuevo";
+                request.setAttribute("loginError",error);
+                request.setAttribute("mensajeErrorLogin",messaggeError);
+                request.setAttribute("abrirLogin",true);
+                request.getRequestDispatcher("index.jsp").forward(request,response);
             }
         }
-        else
-        {
-            out.println("ERROR, campo no válido");
-            out.println("Email: "+email);
-            out.println("Contraseña: "+contrasenya);
-        }
-
-
-    }
-
-    private boolean login(String email, String pass)
-    {
-
-
-       String sql = "SELECT nickname, email, contra " +
-                "FROM Usuarios WHERE email ='"+email+"' AND contra ='"+pass+"'";
-
-       try
-       {
-           con = ds.getConnection();
-           PreparedStatement pstm = con.prepareStatement(sql);
-           ResultSet rset = pstm.executeQuery();
-
-           if (rset.next()) {
-               //Login válido
-               return true;
-           } else {
-               //Login inválido
-               return false;
-           }
-
-       }
-       catch (SQLException e)
-       {
-           e.printStackTrace();
-           return true;
-
-       }
-        /*
-        sql = "SELECT  FROM Usuarios";
-        try {
-            con = ds.getConnection();
-            PreparedStatement pstm = con.prepareStatement(sql);
-            ResultSet rset = pstm.executeQuery();
-            System.out.println("NICK | EMAIL | CONTRASEÑA ");
-            while (rset.next()) {
-
-                System.out.println(rset.getString(1)+" | "+rset.getString(2)+" | "+rset.getString(3));
-                System.out.println(rset.getString(1));
-                System.out.println(rset.getString(2));
-                System.out.println(rset.getString(3));
-            }
-
-            //response.sendRedirect("ok.html");
-
-        } catch (SQLException e) {
-            //response.sendRedirect("error.html");
-            e.printStackTrace(System.err);
-            System.out.println("Stack Trace:<br/>");
-            System.out.println("<br/><br/>Stack Trace (for web display):</br>");
-            System.out.println(displayErrorForWeb(e));
-        }
-        */
     }
 
     private static boolean validateEmail(String email) {

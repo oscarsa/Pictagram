@@ -1,4 +1,4 @@
-package model.data;
+package model;
 
 /**
  * Created by oscar on 28/03/17.
@@ -9,6 +9,7 @@ public class UsuarioVO {
     private String contrasenya;
 
     public UsuarioVO(){}
+
     public UsuarioVO(String nick, String email, String contrasenya) {
         this.nick = nick;
         this.email = email;
