@@ -80,15 +80,14 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean login(String email, String pass)
-    {
-        String sql = "SELECT nickname, email, contra FROM Usuarios WHERE email=? AND contra=?";
+    public boolean login(String nick, String pass) {
+        String sql = "SELECT nickname, email, contra FROM Usuarios WHERE nickname=? AND contra=?";
 
         try
         {
             con = ds.getConnection();
             pstm = con.prepareStatement(sql);
-            pstm.setString(1,email);
+            pstm.setString(1,nick);
             pstm.setString(2,pass);
             rset = pstm.executeQuery();
 
@@ -113,5 +112,127 @@ public class UsuarioDAO {
             try { con.close(); } catch (Exception e) { /* ignored */ }
         }
     }
+
+    public String obtenerEmail(String nick) {
+        String sql = "SELECT email FROM Usuarios WHERE nickname=?";
+
+        try
+        {
+            con = ds.getConnection();
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1,nick);
+            rset = pstm.executeQuery();
+
+            if (rset.next()) {
+                return rset.getString("email");
+
+            } else {
+                return "";
+            }
+
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+            return "";
+
+        } finally {
+            //Aseguramos que cerramos todos objetos relacionados con la conexión a la BD
+            try { rset.close(); } catch (Exception e) { /* ignored */ }
+            try { pstm.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+
+    public boolean nuevoEmail(String nick, String nuevoEmail) {
+
+        String sql = "UPDATE Usuarios SET email = ? WHERE nickname = ?";
+
+        try {
+            con = ds.getConnection();
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1,nuevoEmail);
+            pstm.setString(2,nick);
+
+            int resultadoUpdate = pstm.executeUpdate();
+
+            if (resultadoUpdate>0) {
+                //Actualización correcta
+                return true;
+            } else {
+                //Actualización incorrecta
+                return false;
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            //Aseguramos que cerramos todos objetos relacionados con la conexión a la BD
+            try { rset.close(); } catch (Exception e) { /* ignored */ }
+            try { pstm.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+
+    public boolean nuevoPassword(String nick, String nuevoPassword) {
+        String sql = "UPDATE Usuarios SET contra = ? WHERE nickname = ?";
+
+        try {
+            con = ds.getConnection();
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1,nuevoPassword);
+            pstm.setString(2,nick);
+
+            int resultadoUpdate = pstm.executeUpdate();
+
+            if (resultadoUpdate>0) {
+                //Actualización correcta
+                return true;
+            } else {
+                //Actualización incorrecta
+                return false;
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            //Aseguramos que cerramos todos objetos relacionados con la conexión a la BD
+            try { rset.close(); } catch (Exception e) { /* ignored */ }
+            try { pstm.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+
+    public boolean eliminarUsuario(String nick) {
+        String sql = "DELETE FROM Usuarios WHERE nickname=?";
+
+        try {
+            con = ds.getConnection();
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1,nick);
+
+            int resultadoDelete = pstm.executeUpdate();
+
+            if (resultadoDelete>0) {
+                //Eliminacion correcta
+                return true;
+            } else {
+                //Eliminacion incorrecta
+                return false;
+            }
+
+        }  catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            //Aseguramos que cerramos todos objetos relacionados con la conexión a la BD
+            try { rset.close(); } catch (Exception e) { /* ignored */ }
+            try { pstm.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+
 
 }

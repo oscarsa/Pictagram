@@ -6,24 +6,17 @@ package model;
 public class UsuarioVO {
     private String nick;
     private String email;
-    private String contrasenya;
 
     public UsuarioVO(){}
 
-    public UsuarioVO(String nick, String email, String contrasenya) {
+    public UsuarioVO(String nick, String email) {
         this.nick = nick;
         this.email = email;
-        this.contrasenya = contrasenya;
     }
 
     public void setEmail(String email)
     {
         this.email = email;
-    }
-
-    public void setContrasenya(String contrasenya)
-    {
-        this.contrasenya = contrasenya;
     }
 
     public String getNick()

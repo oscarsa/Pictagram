@@ -102,6 +102,7 @@ public class RegistroServlet extends HttpServlet {
                     boolean registroCorrecto = usuarioDAO.registrarUsuario(nick, email, contrasenya);
                     if (registroCorrecto) {
                         out.println("...el registro se ha realizado CORRECTAMENTE!");
+
                     } else {
                         //out.println("...el registro ha sido erróneo");
                         errores.put("abrirRegistro", "Error, no se ha podido realizar el registro");

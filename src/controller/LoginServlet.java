@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,17 +50,19 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         boolean error=false;
-        String email= (request.getParameter("loginEmail")).trim();
+        String nick= (request.getParameter("loginEmail")).trim();
 
 
-        if(email==null || email.equals(new String(""))){
-            email="";
+        if(nick==null || nick.equals(new String(""))){
+            nick="";
             error=true;
         }
+        /*
         else if(!validateEmail(email)){
             email="";
             error=true;
         }
+        */
 
         String contrasenya = (request.getParameter("loginContrasenya")).trim();
 
@@ -71,22 +74,29 @@ public class LoginServlet extends HttpServlet {
         //Para indicar si hay error
         String messaggeError = "Este es el mensaje de error que se le mostrará al usuario";
 
+        HttpSession session = request.getSession(true);
+
         if(error){
-            messaggeError= "Email o contraseña inválidos, revise los datos introducidos";
+            messaggeError= "Nick o contraseña inválidos, revise los datos introducidos";
             request.setAttribute("loginError",error);
             request.setAttribute("mensajeErrorLogin",messaggeError);
             request.setAttribute("abrirLogin",true);
             request.getRequestDispatcher("index.jsp").forward(request,response);
         }
         else{
-            //response.sendRedirect("modificarComprador.jsp?id="+id+"&tipo="+tipo);
-            out.println("Email: "+email);
+            out.println("Nick: "+nick);
             out.println("Contraseña: "+contrasenya);
 
             UsuarioDAO usuarioDAO = new UsuarioDAO(ds);
-            boolean loginCorrecto = usuarioDAO.login(email,contrasenya);
+
+            boolean loginCorrecto = usuarioDAO.login(nick,contrasenya);
+
+
             if(loginCorrecto) {
-                out.println("El login ha sido CORRECTO");
+                session.setAttribute("usuario",nick);
+                session.setMaxInactiveInterval(30);
+                response.sendRedirect("editarUsuario.jsp");
+                //out.println("El login ha sido CORRECTO");
             } else {
                 messaggeError= "Los datos de login son incorrectos, inténtelo de nuevo";
                 request.setAttribute("loginError",error);
@@ -94,16 +104,7 @@ public class LoginServlet extends HttpServlet {
                 request.setAttribute("abrirLogin",true);
                 request.getRequestDispatcher("index.jsp").forward(request,response);
             }
+
         }
-    }
-
-    private static boolean validateEmail(String email) {
-        // Compiles the given regular expression into a pattern.
-        Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-
-        // Match the given input against this pattern
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 }
