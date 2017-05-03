@@ -10,12 +10,12 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema pictagram_bd
 -- -----------------------------------------------------
--- Base de datos sobre la aplicación de proy_soft basada en el pictagram
+-- Base de data sobre la aplicación de proy_soft basada en el pictagram
 
 -- -----------------------------------------------------
 -- Schema pictagram_bd
 --
--- Base de datos sobre la aplicación de proy_soft basada en el pictagram
+-- Base de data sobre la aplicación de proy_soft basada en el pictagram
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `pictagram_bd` DEFAULT CHARACTER SET utf8 ;
 USE `pictagram_bd` ;

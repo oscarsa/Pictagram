@@ -1,6 +1,8 @@
 package model;
 
 import javax.sql.DataSource;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +17,7 @@ public class UsuarioDAO {
     private DataSource ds;
     private PreparedStatement pstm;
     private ResultSet rset;
+    private static final String SALT = "texto.usado.como.sal";
 
     public UsuarioDAO(DataSource ds) {
         this.ds = ds;
@@ -49,7 +52,31 @@ public class UsuarioDAO {
         }
     }
 
+    public static String generateHash(String input) {
+        StringBuilder hash = new StringBuilder();
+
+        try {
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
+            byte[] hashedBytes = sha.digest(input.getBytes());
+            char[] digits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                    'a', 'b', 'c', 'd', 'e', 'f' };
+            for (int idx = 0; idx < hashedBytes.length; ++idx) {
+                byte b = hashedBytes[idx];
+                hash.append(digits[(b & 0xf0) >> 4]);
+                hash.append(digits[b & 0x0f]);
+            }
+        } catch (NoSuchAlgorithmException e) {
+            // handle error here.
+        }
+
+        return hash.toString();
+    }
+
     public boolean registrarUsuario(String nick, String email, String pass) {
+
+        String saltedPassword = SALT + pass;
+        String hashedPassword = generateHash(saltedPassword);
+
         String sql = "INSERT INTO Usuarios (nickname,email,contra) VALUES (?,?,?)";
 
         try {
@@ -57,7 +84,7 @@ public class UsuarioDAO {
             pstm = con.prepareStatement(sql);
             pstm.setString(1,nick);
             pstm.setString(2,email);
-            pstm.setString(3,pass);
+            pstm.setString(3,hashedPassword);
             int resultadoInsert = pstm.executeUpdate();
 
             if (resultadoInsert>0) {
@@ -81,6 +108,10 @@ public class UsuarioDAO {
     }
 
     public boolean login(String nick, String pass) {
+
+        String saltedPassword = SALT + pass;
+        String hashedPassword = generateHash(saltedPassword);
+
         String sql = "SELECT nickname, email, contra FROM Usuarios WHERE nickname=? AND contra=?";
 
         try
@@ -88,7 +119,7 @@ public class UsuarioDAO {
             con = ds.getConnection();
             pstm = con.prepareStatement(sql);
             pstm.setString(1,nick);
-            pstm.setString(2,pass);
+            pstm.setString(2,hashedPassword);
             rset = pstm.executeQuery();
 
             if (rset.next()) {
@@ -176,12 +207,16 @@ public class UsuarioDAO {
     }
 
     public boolean nuevoPassword(String nick, String nuevoPassword) {
+
+        String saltedPassword = SALT + nuevoPassword;
+        String hashedPassword = generateHash(saltedPassword);
+
         String sql = "UPDATE Usuarios SET contra = ? WHERE nickname = ?";
 
         try {
             con = ds.getConnection();
             pstm = con.prepareStatement(sql);
-            pstm.setString(1,nuevoPassword);
+            pstm.setString(1,hashedPassword);
             pstm.setString(2,nick);
 
             int resultadoUpdate = pstm.executeUpdate();
