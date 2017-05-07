@@ -121,10 +121,13 @@
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li ><a href="index.jsp">Inicio</a></li>
+                        <li ><a href="portada.jsp">Portada</a></li>
                         <li class="active"><a href="#">Mi perfil</a></li>
                         <li ><a href="#">Mensajes</a></li>
                     </ul>
+                    <form action="logout.do" method="post">
+                        <input type="submit" class="btn btn-danger navbar-btn pull-right" value="Logout" />
+                    </form>
                 </div><!--/.nav-collapse -->
             </div>
         </nav>
@@ -162,7 +165,8 @@
                 <div class="form-group">
                     <div class="col-sm-offset-4 col-sm-6">
                         <button type="submit" name="modificar" class="btn btn-info">Modificar perfil</button>
-                        <input type="submit" name="eliminar" class="btn btn-danger" value="Eliminar perfil"></input>
+                        <input name="eliminar" type="submit"  class="btn btn-danger"
+                        value="Eliminar perfil"></input>
                     </div>
                 </div>
             </form>
@@ -174,5 +178,7 @@
         <script src="../js/jquery-1.11.1.min.js"></script>
         <script src="../js/bootstrap.min.js"></script>
         <script src="../js/bootstrap-confirmation.js"></script>
-    </body>
+
+
+
 </html>

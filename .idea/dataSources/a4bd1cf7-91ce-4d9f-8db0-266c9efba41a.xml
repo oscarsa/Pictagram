@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="jdbc:mysql://127.0.0.1:3306/Pictagram_BD?">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.1">
+    <root id="1"/>
+    <schema id="2" parent="1" name="information_schema">
+      <Current>1</Current>
+    </schema>
+    <schema id="3" parent="1" name="mysql"/>
+    <schema id="4" parent="1" name="performance_schema"/>
+    <schema id="5" parent="1" name="sys"/>
+    <schema id="6" parent="1" name="Pictagram_BD">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <table id="7" parent="6" name="Amistades"/>
+    <table id="8" parent="6" name="Comentario"/>
+    <table id="9" parent="6" name="Fotos"/>
+    <table id="10" parent="6" name="Mensaje"/>
+    <table id="11" parent="6" name="Relacion"/>
+    <table id="12" parent="6" name="Usuarios"/>
+    <column id="13" parent="7" name="idAmistades">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="14" parent="7" name="nickname">
+      <Position>2</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="15" parent="7" name="Amigo">
+      <Position>3</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="16" parent="7" name="fk_Amistades_Usuarios1_idx">
+      <ColNames>nickname</ColNames>
+    </index>
+    <index id="17" parent="7" name="fk_Amistades_Usuarios2_idx">
+      <ColNames>Amigo</ColNames>
+    </index>
+    <key id="18" parent="7" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idAmistades</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="19" parent="8" name="idComentario">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="20" parent="8" name="idFoto">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="21" parent="8" name="texto">
+      <Position>3</Position>
+      <DataType>varchar(300)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="22" parent="8" name="fk_Comentario_Fotos_idx">
+      <ColNames>idFoto</ColNames>
+    </index>
+    <key id="23" parent="8" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idComentario</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="24" parent="9" name="idFoto">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="25" parent="9" name="nickname">
+      <Position>2</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="26" parent="9" name="titulo">
+      <Position>3</Position>
+      <DataType>varchar(45)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="27" parent="9" name="foto">
+      <Position>4</Position>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="28" parent="9" name="valoracion">
+      <Position>5</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="29" parent="9" name="descripcion">
+      <Position>6</Position>
+      <DataType>varchar(300)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="30" parent="9" name="fk_Fotos_Usuarios1_idx">
+      <ColNames>nickname</ColNames>
+    </index>
+    <key id="31" parent="9" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idFoto</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="32" parent="10" name="idmensaje">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="33" parent="10" name="nick_envia_msj">
+      <Position>2</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="34" parent="10" name="nick_recibe_msj">
+      <Position>3</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="35" parent="10" name="mensaje">
+      <Position>4</Position>
+      <DataType>varchar(300)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="36" parent="10" name="fk_Mensaje_Usuarios1_idx">
+      <ColNames>nick_envia_msj</ColNames>
+    </index>
+    <index id="37" parent="10" name="fk_Mensaje_Usuarios2_idx">
+      <ColNames>nick_recibe_msj</ColNames>
+    </index>
+    <key id="38" parent="10" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idmensaje</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="39" parent="11" name="idRelacion">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="40" parent="11" name="nick_envia_pet">
+      <Position>2</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="41" parent="11" name="nick_recibe_pet">
+      <Position>3</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="42" parent="11" name="fk_Relacion_Usuarios1_idx">
+      <ColNames>nick_envia_pet</ColNames>
+    </index>
+    <index id="43" parent="11" name="fk_Relacion_Usuarios2_idx">
+      <ColNames>nick_recibe_pet</ColNames>
+    </index>
+    <key id="44" parent="11" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idRelacion</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="45" parent="12" name="nickname">
+      <Position>1</Position>
+      <DataType>varchar(10)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="46" parent="12" name="email">
+      <Position>2</Position>
+      <DataType>varchar(75)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="47" parent="12" name="contra">
+      <Position>3</Position>
+      <DataType>varchar(200)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="48" parent="12" name="email_UNIQUE">
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="49" parent="12" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>nickname</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <key id="50" parent="12" name="email_UNIQUE">
+      <ColNames>email</ColNames>
+      <UnderlyingIndexName>email_UNIQUE</UnderlyingIndexName>
+    </key>
+  </database-model>
+</dataSource>

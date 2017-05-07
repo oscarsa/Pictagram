@@ -25,6 +25,15 @@
         <servlet-class>controller.EditarUsuarioServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>portada</servlet-name>
+        <servlet-class>controller.PortadaServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>logout</servlet-name>
+        <servlet-class>controller.LogoutServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>login</servlet-name>
         <url-pattern>/Login.do</url-pattern>
@@ -40,6 +49,14 @@
     <servlet-mapping>
         <servlet-name>editarUsuario</servlet-name>
         <url-pattern>/EditarUsuario.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>portada</servlet-name>
+        <url-pattern>/portada.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logout</servlet-name>
+        <url-pattern>/logout.do</url-pattern>
     </servlet-mapping>
 
 

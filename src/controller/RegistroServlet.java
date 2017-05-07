@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -44,8 +43,8 @@ public class RegistroServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        HashMap<String, String> errores = new HashMap<String, String>(); //Para recopilar los errores
-        HashMap<String, String> correcto = new HashMap<String, String>(); //Para recopilar los data bien introducidos
+        HashMap<String, String> errores = new HashMap<>(); //Para recopilar los errores
+        HashMap<String, String> correcto = new HashMap<>(); //Para recopilar los data bien introducidos
         String email, nick, contrasenya;
         boolean error = false;
         PrintWriter out = response.getWriter();
@@ -55,7 +54,7 @@ public class RegistroServlet extends HttpServlet {
 
         //Valida email
         email = (request.getParameter("registroEmail")).trim();
-        if (email == null || email.equals(new String(""))) {
+        if (email == null || email.equals("")) {
             errores.put("email", "Introduzca email");
             error = true;
         } else if (!validateEmail(email)) {
@@ -67,7 +66,7 @@ public class RegistroServlet extends HttpServlet {
 
         //Valida nick
         nick = (request.getParameter("registroNick")).trim();
-        if (nick == null || nick.equals(new String(""))) {
+        if (nick == null || nick.equals("")) {
             errores.put("nick", "Introduzca el nick");
             error = true;
         } else {
@@ -76,7 +75,7 @@ public class RegistroServlet extends HttpServlet {
 
         //Valida contraseña
         contrasenya = request.getParameter("registroContrasenya");
-        if (contrasenya == null || contrasenya.equals(new String(""))) {
+        if (contrasenya == null || contrasenya.equals("")) {
             errores.put("contrasenya", "Escriba la contrase&ntilde;a");
             error = true;
         } else {

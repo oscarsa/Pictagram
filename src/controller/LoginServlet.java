@@ -94,8 +94,8 @@ public class LoginServlet extends HttpServlet {
 
             if(loginCorrecto) {
                 session.setAttribute("usuario",nick);
-                session.setMaxInactiveInterval(30);
-                response.sendRedirect("editarUsuario.jsp");
+                session.setMaxInactiveInterval(300);
+                response.sendRedirect("portada.jsp");
                 //out.println("El login ha sido CORRECTO");
             } else {
                 messaggeError= "Los datos de login son incorrectos, inténtelo de nuevo";
