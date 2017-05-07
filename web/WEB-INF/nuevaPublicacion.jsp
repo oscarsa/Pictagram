@@ -1,7 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -14,12 +11,10 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Portada</title>
+    <title>Editar usuario</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-    <link href="../css/portada.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="../css/starter-template.css" rel="stylesheet">
@@ -47,61 +42,49 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Portada</a></li>
+                <li ><a href="portada.jsp">Portada</a></li>
                 <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
                 <li ><a href="#">Mensajes</a></li>
             </ul>
             <form action="logout.do" method="post">
                 <input type="submit" class="btn btn-danger navbar-btn pull-right" value="Logout" />
             </form>
-
-            <a role="button" href="nuevaPublicacion.jsp" style="margin-right: 10px" type="button"
-               class="btn btn-info navbar-btn pull-right">Nueva publicación</a>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
 
-
-
 <div class="container">
 
-
     <div class="starter-template">
-        <h1>Galer&iacute;a de im&aacute;genes</h1>
+        <h1>Crear nueva publicación</h1>
     </div>
 
-    <div class="row">
-        <%-- ${fn:length(listaFotos)} --%>
-        <c:forEach var="foto" items="${listaFotos}" varStatus="loop">
-            <div class="col-md-4">
-                <div class="thumbnail">
-                    <div class="row">
-                        <div class="col-xs-2">
-                            <div class="circle-avatar" style="background-image: url('/img/fotos/profile.png')"></div>
-                        </div>
-                        <div class="col-xs-10 texto-portada">
-
-                            <!--TODO La redirección a usuario hacerla por POST, no por GET-->
-                            <a href="usuario.jsp?nick=${foto.nickname}">
-                                <c:out value="${foto.nickname}"/>
-                            </a>
-                        </div>
-                        <div class="col-xs-12">
-
-                            <!--TODO La redirección a imagen hacerla por POST, no por GET-->
-                            <a href="foto.jsp?idFoto=${foto.idFoto}">
-                                <img src="./fotografias/${foto.foto}" alt="lights" class="portada" style="width:100%">
-                                <div class="caption">
-                                    <p class="titulo"><c:out value="${foto.titulo}"/></p>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    <form class="form-horizontal" method="post" action="NuevaPublicacion.do">
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="titulo">Título:</label>
+            <div class="col-sm-6">
+                <input type="text" class="form-control" name="inputTitulo" id="titulo">
             </div>
-        </c:forEach>
-    </div>
-
+        </div>
+        <div class="form-group">
+            <label class="control-label col-sm-4" for="descripcion">Descripción:</label>
+            <div class="col-sm-6">
+                <textarea class="form-control" rows="3" class="form-control" id="descripcion"
+                          name="inputDescripcion"></textarea>
+            </div>
+        </div>
+        <div class="form-group ">
+            <label class="control-label col-sm-4" for="foto">Fotografía:</label>
+            <div class="col-sm-6">
+                <input type="file" name="inputFoto" class="form-control" id="foto" >
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-4 col-sm-6">
+                <button type="submit" name="modificar" class="btn btn-info">Crear publicación</button>
+            </div>
+        </div>
+    </form>
 </div><!-- /.container -->
 
 
@@ -110,5 +93,7 @@
 <script src="../js/jquery-1.11.1.min.js"></script>
 <script src="../js/bootstrap.min.js"></script>
 <script src="../js/bootstrap-confirmation.js"></script>
-</body>
+
+
+
 </html>

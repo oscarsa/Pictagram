@@ -117,7 +117,7 @@
                         <span class="icon-bar"></span>
                     </button>
 
-                    <a class="navbar-brand" href="index.jsp">Pictagram</a>
+                    <a class="navbar-brand" href="portada.jsp">Pictagram</a>
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
