@@ -20,10 +20,10 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
- * Created by oscar on 3/05/17.
+ * Created by oscar on 10/05/17.
  */
-@WebServlet(name = "PortadaServlet")
-public class PortadaServlet extends HttpServlet {
+@WebServlet(name = "EditarPublicacionesServlet")
+public class EditarPublicacionesServlet extends HttpServlet {
 
     private DataSource ds;
 
@@ -40,9 +40,44 @@ public class PortadaServlet extends HttpServlet {
         }
     }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //Control de sesión de usuario
+        HttpSession session = request.getSession(false);
+        String nick = "";
 
+        if (session != null && session.getAttribute("usuario") != null) {
+            nick = (String) session.getAttribute("usuario");
+
+        } else {
+            //out.println("Sesión no iniciada!");
+            request.getRequestDispatcher("index.jsp").forward(request, response);
+        }
+
+        String idPublicacionString = request.getParameter("botonEliminar");
+        int idPublicacion;
+
+        PrintWriter out = response.getWriter();
+
+        if(idPublicacionString == null || idPublicacionString.equals("")) {
+            request.setAttribute("error","Error, no se ha podido eliminar la publicación");
+            request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request,response);
+        } else {
+            idPublicacion = Integer.parseInt(idPublicacionString);
+            FotoDAO fotoDAO = new FotoDAO(ds);
+            if(fotoDAO.eliminarPublicacion(idPublicacion)) {
+                ArrayList<FotoVO> listaFotos = fotoDAO.misFotos(nick);
+                request.setAttribute("listaFotos", listaFotos);
+                request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request,response);
+            } else {
+                request.setAttribute("error","Error, no se ha podido eliminar la publicación");
+                request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request,response);
+            }
+        }
+
+
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession(false);
@@ -63,24 +98,14 @@ public class PortadaServlet extends HttpServlet {
         } else {
             try {
                 FotoDAO fotoDAO = new FotoDAO(ds);
-                ArrayList<FotoVO> listaFotos = fotoDAO.fotosDeAmigos(nick);
+                ArrayList<FotoVO> listaFotos = fotoDAO.misFotos(nick);
                 request.setAttribute("listaFotos", listaFotos);
-                request.getRequestDispatcher("/WEB-INF/portada.jsp").forward(request, response);
+                request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request, response);
 
             } catch (Exception e) {
                 e.printStackTrace(System.err);
-                out.println("Stack Trace:<br/>");
-                out.println("<br/><br/>Stack Trace (for web display):</br>");
-                out.println(displayErrorForWeb(e));
             }
         }
-    }
-
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException
-    {
-        doGet(request, response);
     }
 
     public String displayErrorForWeb(Throwable t) {

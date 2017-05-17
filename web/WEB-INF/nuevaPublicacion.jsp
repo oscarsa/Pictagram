@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.util.HashMap" language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,6 +28,92 @@
 
 <body>
 
+
+    <%
+
+
+  //Para añadir los mensajes de error
+  String tituloErrorMessage="";
+  String descripcionErrorMessage="";
+  String imagenErrorMessage="";
+
+  //Para añadir los valores correctos
+  String tituloValido="";
+  String descripcionValida="";
+  String imagenValida="";
+
+  //Para reescribir los parametros correctos
+  String tituloValor="";
+  String descripcionValor="";
+  String imagenValor="";
+
+  //Para indicar si hay error
+  boolean tituloHayError= false;
+  boolean descripcionHayError= false;
+  boolean imagenHayError= false;
+
+  //Diccionarios para los errores
+  HashMap<String, String> errores = (HashMap) request.getAttribute("errores");
+  HashMap<String, String> correcto = (HashMap) request.getAttribute("correcto");
+
+  String errorHeader = "<span class='help-block'>";
+  String errorFooter = "</span>";
+
+  String resaltarOk = "class=\"form-group has-success has-feedback\"";
+  String resaltarFail = "class=\"form-group has-error has-feedback\"";
+  String sinResaltar = "class=\"form-group\"";
+
+  String resaltarTitulo = "";
+  String resaltarDescripcion = "";
+  String resaltarImagen = "";
+
+  if(errores != null){
+
+    if(errores.containsKey("titulo")){
+      tituloErrorMessage = errorHeader + errores.get("titulo") + errorFooter;
+      tituloHayError = true;
+    }else {
+      tituloValido = correcto.get("titulo");
+    }
+    if(errores.containsKey("descripcion")){
+      descripcionErrorMessage = errorHeader + errores.get("descripcion") + errorFooter;
+      descripcionHayError = true;
+    }else {
+      descripcionValida = correcto.get("descripcion");
+    }
+
+      imagenErrorMessage = errorHeader + errores.get("imagen") + errorFooter;
+      imagenHayError = true;
+
+
+
+    if(!tituloHayError) {
+        tituloValor = "value='"+tituloValido+"'";
+        resaltarTitulo = resaltarOk;
+
+    } else {
+        tituloValor = "placeholder='Introducir título'";
+        resaltarTitulo = resaltarFail;
+    }
+
+    if(!descripcionHayError) {
+        descripcionValor = descripcionValida;
+        resaltarDescripcion = resaltarOk;
+
+    } else {
+        resaltarDescripcion = resaltarFail;
+    }
+
+    resaltarImagen = resaltarFail;
+
+  } else {
+        resaltarTitulo = sinResaltar;
+        resaltarDescripcion = sinResaltar;
+        resaltarImagen = sinResaltar;
+  }
+
+  %>
+
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -45,6 +131,7 @@
                 <li ><a href="portada.jsp">Portada</a></li>
                 <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
                 <li ><a href="#">Mensajes</a></li>
+                <li ><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
             </ul>
             <form action="logout.do" method="post">
                 <input type="submit" class="btn btn-danger navbar-btn pull-right" value="Logout" />
@@ -59,24 +146,33 @@
         <h1>Crear nueva publicación</h1>
     </div>
 
-    <form class="form-horizontal" method="post" action="NuevaPublicacion.do">
-        <div class="form-group">
+
+
+
+    <form class="form-horizontal" method="post" enctype="multipart/form-data" action="NuevaPublicacion.do">
+        <div <%=resaltarTitulo%>>
             <label class="control-label col-sm-4" for="titulo">Título:</label>
+
             <div class="col-sm-6">
-                <input type="text" class="form-control" name="inputTitulo" id="titulo">
+                <input type="text"  name="inputTitulo" id="titulo" class="form-control" <%= tituloValor%> autofocus>
+                <%=tituloErrorMessage%>
             </div>
         </div>
-        <div class="form-group">
+        <div <%=resaltarDescripcion%>>
             <label class="control-label col-sm-4" for="descripcion">Descripción:</label>
             <div class="col-sm-6">
-                <textarea class="form-control" rows="3" class="form-control" id="descripcion"
-                          name="inputDescripcion"></textarea>
+
+                <textarea class="form-control" rows="3"  class="form-control" id="descripcion"
+                          name="inputDescripcion"><%= descripcionValor%></textarea>
+                <%=descripcionErrorMessage%>
             </div>
         </div>
-        <div class="form-group ">
+        <div <%= resaltarImagen%>>
             <label class="control-label col-sm-4" for="foto">Fotografía:</label>
             <div class="col-sm-6">
-                <input type="file" name="inputFoto" class="form-control" id="foto" >
+
+                <input type="file" name="inputFoto" class="form-control"  id="foto" >
+                <%=imagenErrorMessage%>
             </div>
         </div>
         <div class="form-group">

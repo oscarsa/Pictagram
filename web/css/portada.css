@@ -23,7 +23,7 @@ div.texto-portada{
 
 }
 
-img.portada{
+.portada{
     margin-top: 5px;
     padding-left: 3%;
     padding-right: 3%;
@@ -37,3 +37,4 @@ p.titulo {
     margin-left:5px;
     width:100%;
 }
+

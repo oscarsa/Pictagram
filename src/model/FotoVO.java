@@ -12,6 +12,8 @@ public class FotoVO {
     private String descripcion;
     private int valoracion;
 
+    public FotoVO(){}
+
     public FotoVO(int idFoto, String nickname, String titulo, String foto, String descripcion, int valoracion) {
         this.idFoto = idFoto;
         this.nickname = nickname;
@@ -21,6 +23,12 @@ public class FotoVO {
         this.valoracion = valoracion;
     }
 
+    public FotoVO(String nickname, String titulo, String foto, String descripcion) {
+        this.nickname = nickname;
+        this.titulo = titulo;
+        this.foto = foto;
+        this.descripcion = descripcion;
+    }
 
     public String getNickname() {
         return nickname;
@@ -33,8 +41,6 @@ public class FotoVO {
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
-
-
 
     public String getDescripcion() {
         return descripcion;
@@ -63,4 +69,5 @@ public class FotoVO {
     public void setFoto(String foto) {
         this.foto = foto;
     }
+
 }

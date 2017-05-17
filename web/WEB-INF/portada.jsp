@@ -4,7 +4,7 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -32,7 +32,6 @@
 </head>
 
 <body>
-
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -47,16 +46,18 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Portada</a></li>
+                <li class="active"><a href="portada.jsp">Portada</a></li>
                 <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
                 <li ><a href="#">Mensajes</a></li>
+                <li ><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
             </ul>
             <form action="logout.do" method="post">
                 <input type="submit" class="btn btn-danger navbar-btn pull-right" value="Logout" />
             </form>
-
             <a role="button" href="nuevaPublicacion.jsp" style="margin-right: 10px" type="button"
-               class="btn btn-info navbar-btn pull-right">Nueva publicación</a>
+               class="btn btn-info navbar-btn pull-right">
+                Nueva publicación
+            </a>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
@@ -70,7 +71,7 @@
         <h1>Galer&iacute;a de im&aacute;genes</h1>
     </div>
 
-    <div class="row">
+    <div class="row ">
         <%-- ${fn:length(listaFotos)} --%>
         <c:forEach var="foto" items="${listaFotos}" varStatus="loop">
             <div class="col-md-4">
@@ -86,11 +87,11 @@
                                 <c:out value="${foto.nickname}"/>
                             </a>
                         </div>
-                        <div class="col-xs-12">
+                        <div class="col-xs-12 ">
 
                             <!--TODO La redirección a imagen hacerla por POST, no por GET-->
                             <a href="foto.jsp?idFoto=${foto.idFoto}">
-                                <img src="./fotografias/${foto.foto}" alt="lights" class="portada" style="width:100%">
+                                <img src="./imagenes/${foto.foto}" alt="lights" class="portada" style="width:100%">
                                 <div class="caption">
                                     <p class="titulo"><c:out value="${foto.titulo}"/></p>
                                 </div>

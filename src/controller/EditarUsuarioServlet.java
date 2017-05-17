@@ -47,8 +47,6 @@ public class EditarUsuarioServlet extends HttpServlet {
 
         PrintWriter out = response.getWriter();
 
-        //Para indicar si hay error
-        String messaggeError = "Este es el mensaje de error que se le mostrará al usuario";
         response.setContentType("text/html");
 
         boolean error = false;
@@ -90,7 +88,6 @@ public class EditarUsuarioServlet extends HttpServlet {
 
         String nick="";
 
-        boolean eliminar = false;
         if (request.getParameter("eliminar") != null){
             //Botón eliminar
             if (session != null && session.getAttribute("usuario") != null) {
@@ -120,7 +117,7 @@ public class EditarUsuarioServlet extends HttpServlet {
             boolean errorEmail=false;
             String email = (request.getParameter("email")).trim();
 
-            if(email==null || email.equals(new String("")) || !validateEmail(email)){
+            if(email.equals("") || !validateEmail(email)){
                 email = "";
                 errorEmail=true;
             }
@@ -128,15 +125,10 @@ public class EditarUsuarioServlet extends HttpServlet {
             boolean passwordVacia = false;
             String contrasenya = (request.getParameter("password")).trim();
 
-            if(contrasenya==null || contrasenya.equals(new String(""))){
+            if(contrasenya.equals("")){
                 contrasenya="";
                 passwordVacia=true;
             }
-
-            //Para indicar si hay error
-            String messaggeError = "Este es el mensaje de error que se le mostrará al usuario";
-
-
 
 
 
