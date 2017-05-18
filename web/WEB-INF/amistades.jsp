@@ -12,15 +12,13 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Editar usuario</title>
+    <title>Amistades</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <!-- Custom styles for this template -->
     <link href="../css/starter-template.css" rel="stylesheet">
-
-    <link href="../css/editarPublicaciones.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -30,16 +28,6 @@
 </head>
 
 <body>
-
-<%
-    boolean hayError = false;
-    String mensajeError = "";
-
-    if (request.getAttribute("error") != null) {
-        mensajeError = (String) request.getAttribute("nick");
-        hayError = true;
-    }
-%>
 
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -60,7 +48,6 @@
                 <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
                 <li ><a href="#">Mensajes</a></li>
                 <li class="active"><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
-                <li ><a href="amistades.jsp">Usuarios y amistades</a> </li>
             </ul>
             <form action="logout.do" method="post">
                 <input type="submit" class="btn btn-danger navbar-btn pull-right" value="Logout" />
@@ -72,58 +59,37 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>Editar publicaciones</h1>
+        <h1>Usuarios y amistades</h1>
     </div>
 
-    <% if(hayError) {%>
-    <div class="alert alert-danger">
-        <strong>Error - </strong>No se ha podido eliminar la publicación.
+    <div class="row">
+        <div class="col-md-offset-1 col-xs-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item active">Amistades</a>
+                <c:forEach var="amigo" items="${listaAmigos}" varStatus="loop">
+                    <a href="usuario.jsp?nick=${amigo.nick}"
+                       class="list-group-item list-group-item-action">${amigo.nick}</a>
+                </c:forEach>
+
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="list-group">
+                <a href="#" class="list-group-item active">Otros usuarios</a>
+                <c:forEach var="noAmigo" items="${listaNoAmigos}" varStatus="loop">
+                    <a href="usuario.jsp?nick=${noAmigo.nick}"
+                       class="list-group-item list-group-item-action">${noAmigo.nick}</a>
+                </c:forEach>
+            </div>
+        </div>
+        <div class="col-xs-3">
+            <div class="list-group">
+                <!-- TODO, mostrar las peticiones de amistad que tiene el usuario, tabla relaciones -->
+                <a href="#" class="list-group-item active">Peticiones de amistad</a>
+            </div>
+        </div>
     </div>
-    <%}%>
 
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Descripción</th>
-                <th>Imagen</th>
-                <th>Edición</th>
-            </tr>
-        </thead>
-        <tbody>
-
-            <c:forEach var="foto" items="${listaFotos}" varStatus="loop">
-                <tr>
-                    <td>${foto.titulo}</td>
-                    <td>${foto.descripcion}</td>
-                    <td class="smallImage"><img src="./imagenes/${foto.foto}" alt="lights" class="portada img-thumbnail "
-                             style="width:100%"></td>
-                    <td>
-
-                        <form action="editarPublicacion.do" method="get">
-                            <label for="editar${foto.idFoto}" class="btn"><i class="glyphicon glyphicon-pencil"
-                                                               style="color:#2e6da4"></i></label>
-                            <input id="editar${foto.idFoto}" type="submit" name="idPub" value="${foto.idFoto}"
-                                   class="hidden" />
-
-
-                        </form>
-
-                        <form action="eliminarPublicacion.do" method="post">
-                            <label for="eliminar${foto.idFoto}" class="btn"><i class="glyphicon glyphicon-trash"
-                                style="color:darkred"></i></label>
-                            <input id="eliminar${foto.idFoto}" type="submit" name="botonEliminar"
-                                   value="${foto.idFoto}"
-                                    class="hidden" />
-                        </form>
-
-
-                    </td>
-                </tr>
-            </c:forEach>
-
-        </tbody>
-    </table>
 
 
 </div><!-- /.container -->

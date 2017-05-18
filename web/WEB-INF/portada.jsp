@@ -50,6 +50,7 @@
                 <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
                 <li ><a href="#">Mensajes</a></li>
                 <li ><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
+                <li ><a href="amistades.jsp">Usuarios y amistades</a> </li>
             </ul>
             <form action="logout.do" method="post">
                 <input type="submit" class="btn btn-danger navbar-btn pull-right" value="Logout" />

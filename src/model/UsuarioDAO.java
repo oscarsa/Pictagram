@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by oscar on 28/03/17.
@@ -267,6 +268,118 @@ public class UsuarioDAO {
             try { pstm.close(); } catch (Exception e) { /* ignored */ }
             try { con.close(); } catch (Exception e) { /* ignored */ }
         }
+    }
+
+    public UsuarioVO obtenerUsuario (String nick) {
+        String sql = "SELECT * FROM Usuarios WHERE nickname=?";
+
+        UsuarioVO usuario = new UsuarioVO();
+
+        try {
+            con = ds.getConnection();
+            pstm = con.prepareStatement(sql);
+            pstm.setString(1,nick);
+            rset = pstm.executeQuery();
+
+            while (rset.next()) {
+                //Se crea un objeto FotoVO con cada una de las fotos recuperadas
+                usuario = new UsuarioVO(
+                        rset.getString("nickname"),
+                        rset.getString("email"));
+            }
+
+            return usuario;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return usuario;
+
+        } finally {
+            //Aseguramos que cerramos todos objetos relacionados con la conexión a la BD
+            try { rset.close(); } catch (Exception e) { /* ignored */ }
+            try { pstm.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+
+    public ArrayList <UsuarioVO> obtenerUsuarios() {
+        ArrayList <UsuarioVO> usuarios = new ArrayList<>();
+        UsuarioVO usuario;
+
+        String sql = "SELECT * FROM Usuarios ";
+
+        try {
+            con = ds.getConnection();
+            pstm = con.prepareStatement(sql);
+            rset = pstm.executeQuery();
+
+            while (rset.next()) {
+
+                usuario = new UsuarioVO(
+                        rset.getString("nickname"),
+                        rset.getString("email"));
+
+                //Se inserta el objeto en el ArrayList
+                usuarios.add(usuario);
+            }
+
+            return usuarios;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return usuarios;
+
+        } finally {
+            //Aseguramos que cerramos todos objetos relacionados con la conexión a la BD
+            try { rset.close(); } catch (Exception e) { /* ignored */ }
+            try { pstm.close(); } catch (Exception e) { /* ignored */ }
+            try { con.close(); } catch (Exception e) { /* ignored */ }
+        }
+    }
+
+    public ArrayList <UsuarioVO> obtenerAmigos(String nick) {
+        RelacionDAO relacionDAO = new RelacionDAO(ds);
+        ArrayList <RelacionVO> relaciones = relacionDAO.obtenerRelaciones(nick);
+
+        ArrayList <UsuarioVO> amigos = new ArrayList<>();
+
+        for(RelacionVO relacion:relaciones) {
+            if(relacion.getNick_envia_pet().equals(nick)) {
+                //El amigo es nick_recibe_pet
+                amigos.add(this.obtenerUsuario(relacion.getNick_recibe_pet()));
+
+            } else {
+                //El amigo es nick_envia_pet
+                amigos.add(this.obtenerUsuario(relacion.getNick_envia_pet()));
+            }
+        }
+
+        return amigos;
+
+    }
+
+    public ArrayList <UsuarioVO> obtenerNoAmigos(String nick) {
+
+        ArrayList <UsuarioVO> usuarios = this.obtenerUsuarios();
+        ArrayList <UsuarioVO> amigos = this.obtenerAmigos(nick);
+        ArrayList <UsuarioVO> noAmigos = new ArrayList<>();
+
+        boolean esAmigo = false;
+
+        for(UsuarioVO usuario:usuarios) {
+            esAmigo = false;
+            for(UsuarioVO amigo:amigos) {
+                if(amigo.getNick().equals(usuario.getNick()) || usuario.getNick().equals(nick)) {
+                    esAmigo=true;
+                }
+            }
+            if(!esAmigo) {
+                noAmigos.add(usuario);
+            }
+            esAmigo=false;
+        }
+        return noAmigos;
+
     }
 
 

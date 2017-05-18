@@ -45,6 +45,10 @@
         <servlet-name>editarPublicacion</servlet-name>
         <servlet-class>controller.EditarPublicacionServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>usuariosAmistades</servlet-name>
+        <servlet-class>controller.AmistadesServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>login</servlet-name>
@@ -93,6 +97,10 @@
     <servlet-mapping>
         <servlet-name>editarPublicacion</servlet-name>
         <url-pattern>/editarPublicacion.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>usuariosAmistades</servlet-name>
+        <url-pattern>/amistades.jsp</url-pattern>
     </servlet-mapping>
 
 
