@@ -46,8 +46,8 @@
             <ul class="nav navbar-nav">
                 <li ><a href="portada.jsp">Portada</a></li>
                 <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
-                <li class="active"><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
-                <li ><a href="amistades.jsp">Usuarios y amistades</a> </li>
+                <li ><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
+                <li class="active"><a href="amistades.jsp">Usuarios y amistades</a> </li>
             </ul>
             <form action="logout.do" method="post">
                 <input type="submit" class="btn btn-danger navbar-btn pull-right" value="Logout" />
