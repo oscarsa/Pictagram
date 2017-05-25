@@ -48,7 +48,6 @@
             <ul class="nav navbar-nav">
                 <li class="active"><a href="portada.jsp">Portada</a></li>
                 <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
-                <li ><a href="#">Mensajes</a></li>
                 <li ><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
                 <li ><a href="amistades.jsp">Usuarios y amistades</a> </li>
             </ul>
@@ -84,15 +83,16 @@
                         <div class="col-xs-10 texto-portada">
 
                             <!--TODO La redirección a usuario hacerla por POST, no por GET-->
-                            <a href="usuario.jsp?nick=${foto.nickname}">
+                            <a href="perfil.jsp?nick=${foto.nickname}">
                                 <c:out value="${foto.nickname}"/>
                             </a>
                         </div>
                         <div class="col-xs-12 ">
 
                             <!--TODO La redirección a imagen hacerla por POST, no por GET-->
-                            <a href="foto.jsp?idFoto=${foto.idFoto}">
-                                <img src="./imagenes/${foto.foto}" alt="lights" class="portada" style="width:100%">
+                            <a href="#">
+                                <img src="./imagenes/${foto.foto}" alt="${foto.foto}" class="portada"
+                                     style="width:100%">
                                 <div class="caption">
                                     <p class="titulo"><c:out value="${foto.titulo}"/></p>
                                 </div>
@@ -105,8 +105,6 @@
     </div>
 
 </div><!-- /.container -->
-
-
 
 <!-- Scripts -->
 <script src="../js/jquery-1.11.1.min.js"></script>

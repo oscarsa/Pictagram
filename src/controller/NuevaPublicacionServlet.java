@@ -26,7 +26,7 @@ import java.util.HashMap;
 @MultipartConfig
 public class NuevaPublicacionServlet extends HttpServlet {
 
-    File uploads = new File("/home/oscar/apache-tomcat-9.0.0.M18/webapps/imagenes");
+    File uploads = new File("/home/oscar/IdeaProjects/Pictagram/out/artifacts/untitled_war_exploded/imagenes");
 
     private DataSource ds;
 
@@ -120,13 +120,13 @@ public class NuevaPublicacionServlet extends HttpServlet {
                 boolean todoCorrecto = fotoDAO.nuevaPublicacion(fotoVO);
 
                 if(todoCorrecto) {
-                    request.getRequestDispatcher("portada.jsp").forward(request, response);
+                    response.sendRedirect("editarPublicaciones.jsp");
                 } else {
                     request.getRequestDispatcher("index.jsp").forward(request, response);
                 }
             } catch (Exception e) {
                 e.printStackTrace(System.err);
-                out.println(displayErrorForWeb(e));
+
             }
 
         } else{
@@ -155,11 +155,4 @@ public class NuevaPublicacionServlet extends HttpServlet {
 
     }
 
-    public String displayErrorForWeb(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        String stackTrace = sw.toString();
-        return stackTrace.replace(System.getProperty("line.separator"), "<br/>\n");
-    }
 }

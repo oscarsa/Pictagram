@@ -34,18 +34,25 @@ public class FotoDAO {
             pstm = con.prepareStatement(sql);
             rset = pstm.executeQuery();
 
-            while (rset.next()) {
-                //Se crea un objeto FotoVO con cada una de las fotos recuperadas
-                foto = new FotoVO(
-                        rset.getInt("idFoto"),
-                        rset.getString("nickname"),
-                        rset.getString("titulo"),
-                        rset.getString("foto"),
-                        rset.getString("descripcion"),
-                        rset.getInt("valoracion"));
+            String nickAutorFoto = "";
+            RelacionDAO relacionDAO = new RelacionDAO(ds);
 
-                //Se inserta el objeto en el ArrayList
-                listaFotos.add(foto);
+            while (rset.next()) {
+
+                nickAutorFoto = rset.getString("nickname");
+                if(relacionDAO.tienenRelacion(miNickname,nickAutorFoto)) {
+                    //Se crea un objeto FotoVO con cada una de las fotos recuperadas
+                    foto = new FotoVO(
+                            rset.getInt("idFoto"),
+                            rset.getString("nickname"),
+                            rset.getString("titulo"),
+                            rset.getString("foto"),
+                            rset.getString("descripcion"),
+                            rset.getInt("valoracion"));
+
+                    //Se inserta el objeto en el ArrayList
+                    listaFotos.add(foto);
+                }
             }
 
             return listaFotos;

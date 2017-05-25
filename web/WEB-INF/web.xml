@@ -49,6 +49,10 @@
         <servlet-name>usuariosAmistades</servlet-name>
         <servlet-class>controller.AmistadesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>perfilUsuario</servlet-name>
+        <servlet-class>controller.PerfilServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>login</servlet-name>
@@ -101,6 +105,14 @@
     <servlet-mapping>
         <servlet-name>usuariosAmistades</servlet-name>
         <url-pattern>/amistades.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>perfilUsuario</servlet-name>
+        <url-pattern>/perfil.jsp</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>perfilUsuario</servlet-name>
+        <url-pattern>/amistad.do</url-pattern>
     </servlet-mapping>
 
 

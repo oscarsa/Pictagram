@@ -123,7 +123,6 @@
                     <ul class="nav navbar-nav">
                         <li ><a href="portada.jsp">Portada</a></li>
                         <li class="active"><a href="#">Mi perfil</a></li>
-                        <li ><a href="#">Mensajes</a></li>
                         <li ><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
                         <li ><a href="amistades.jsp">Usuarios y amistades</a> </li>
                     </ul>

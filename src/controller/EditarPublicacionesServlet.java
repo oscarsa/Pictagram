@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
  */
 @WebServlet(name = "EditarPublicacionesServlet")
 public class EditarPublicacionesServlet extends HttpServlet {
+
+    File uploads = new File("/home/oscar/IdeaProjects/Pictagram/out/artifacts/untitled_war_exploded/imagenes");
 
     private DataSource ds;
 
@@ -64,14 +67,25 @@ public class EditarPublicacionesServlet extends HttpServlet {
         } else {
             idPublicacion = Integer.parseInt(idPublicacionString);
             FotoDAO fotoDAO = new FotoDAO(ds);
-            if(fotoDAO.eliminarPublicacion(idPublicacion)) {
-                ArrayList<FotoVO> listaFotos = fotoDAO.misFotos(nick);
-                request.setAttribute("listaFotos", listaFotos);
-                request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request,response);
-            } else {
+            FotoVO fotoVO = fotoDAO.obtenerFoto(idPublicacion);
+            String ruta = fotoVO.getFoto();
+            File deleteFile = new File(uploads+"/"+ruta);
+            if( deleteFile.exists() ) {
+                if(fotoDAO.eliminarPublicacion(idPublicacion)) {
+                    deleteFile.delete() ;
+                    ArrayList<FotoVO> listaFotos = fotoDAO.misFotos(nick);
+                    request.setAttribute("listaFotos", listaFotos);
+                    request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request,response);
+                } else {
+                    request.setAttribute("error","Error, no se ha podido eliminar la publicación");
+                    request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request,response);
+                }
+            }  else {
                 request.setAttribute("error","Error, no se ha podido eliminar la publicación");
                 request.getRequestDispatcher("/WEB-INF/editarPublicaciones.jsp").forward(request,response);
             }
+
+
         }
 
 

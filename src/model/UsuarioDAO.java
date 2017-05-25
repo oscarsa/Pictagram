@@ -362,25 +362,52 @@ public class UsuarioDAO {
 
         ArrayList <UsuarioVO> usuarios = this.obtenerUsuarios();
         ArrayList <UsuarioVO> amigos = this.obtenerAmigos(nick);
+        ArrayList <UsuarioVO> peticiones = this.obtenerPeticionesAmigos(nick);
         ArrayList <UsuarioVO> noAmigos = new ArrayList<>();
 
         boolean esAmigo = false;
+        boolean esPedidor = false;
 
         for(UsuarioVO usuario:usuarios) {
             esAmigo = false;
-            for(UsuarioVO amigo:amigos) {
-                if(amigo.getNick().equals(usuario.getNick()) || usuario.getNick().equals(nick)) {
-                    esAmigo=true;
+            esPedidor = false;
+            if(!usuario.getNick().equals(nick)) {
+                for(UsuarioVO amigo:amigos) {
+                    if(amigo.getNick().equals(usuario.getNick())) {
+                        esAmigo=true;
+                    }
+                }
+                for(UsuarioVO pedidor:peticiones) {
+                    if(pedidor.getNick().equals(usuario.getNick())) {
+                        esPedidor=true;
+                    }
+                }
+                if(!esAmigo && !esPedidor) {
+                    noAmigos.add(usuario);
                 }
             }
-            if(!esAmigo) {
-                noAmigos.add(usuario);
-            }
-            esAmigo=false;
         }
         return noAmigos;
 
     }
+
+    public ArrayList <UsuarioVO> obtenerPeticionesAmigos(String nick) {
+        AmistadesDAO amistadesDAO = new AmistadesDAO(ds);
+        ArrayList <AmistadesVO> amistades = amistadesDAO.obtenerPeticionesDeAmistad(nick);
+
+        ArrayList <UsuarioVO> peticionesAmistad = new ArrayList<>();
+
+        for(AmistadesVO amistad:amistades) {
+
+            peticionesAmistad.add(this.obtenerUsuario(amistad.getNickname()));
+        }
+
+        return peticionesAmistad;
+    }
+
+
+
+
 
 
 }

@@ -1,6 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,10 +10,10 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Amistades</title>
+    <title>Editar usuario</title>
 
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="../css/starter-template.css" rel="stylesheet">
@@ -29,6 +27,32 @@
 
 <body>
 
+<%
+    String nickAmistad = (String) request.getAttribute("nickAmistad");
+    String emailAmistad = (String) request.getAttribute("emailAmistad");
+    String botonAmistad = "";
+
+    if (request.getAttribute("hayRelacion")==null) {
+        if(request.getAttribute("haMandadoPeticion")!=null) {
+            botonAmistad =
+            "<button type=\"button\"  class=\"col-md-offset-2 btn btn-default disabled\">Peticion enviada</button>";
+        } else if(request.getAttribute("haRecibidoPeticion")!=null) {
+            botonAmistad =
+            "<button type=\"submit\" name=\"botonConfirmar\" class=\" col-md-offset-2 btn btn-success\">Confirmar amistad</button>";
+        } else {
+             botonAmistad =
+        "<button type=\"submit\" name=\"botonPeticion\" class=\"col-md-offset-2 btn btn-success\">Enviar peticion de amistad</button>";
+        }
+    } else {
+         botonAmistad =
+        "<button type=\"submit\" name=\"botonEliminar\" class=\"col-md-offset-2 btn btn-danger\">Eliminar amigo</button>";
+    }
+
+
+
+
+
+%>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
@@ -45,8 +69,8 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li ><a href="portada.jsp">Portada</a></li>
-                <li ><a href="editarUsuario.jsp">Mi perfil</a></li>
-                <li class="active"><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
+                <li ><a href="#">Mi perfil</a></li>
+                <li ><a href="editarPublicaciones.jsp">Editar publicaciones</a> </li>
                 <li ><a href="amistades.jsp">Usuarios y amistades</a> </li>
             </ul>
             <form action="logout.do" method="post">
@@ -59,44 +83,29 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>Usuarios y amistades</h1>
+        <h1>Perfil</h1>
     </div>
 
-    <div class="row">
-        <div class="col-md-offset-1 col-xs-3">
-            <div class="list-group">
-                <a href="#" class="list-group-item active">Amistades</a>
-                <c:forEach var="amigo" items="${listaAmigos}" varStatus="loop">
-                    <a href="perfil.jsp?nick=${amigo.nick}"
-                       class="list-group-item list-group-item-action">${amigo.nick}</a>
-                </c:forEach>
-
+    <form class="form-horizontal" action="amistad.do" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Nick</label>
+            <div class="col-sm-10">
+                <p class="form-control-static"><%=nickAmistad%></p>
             </div>
+
         </div>
-        <div class="col-xs-3">
-            <div class="list-group">
-                <a href="#" class="list-group-item active">Otros usuarios</a>
-                <c:forEach var="noAmigo" items="${listaNoAmigos}" varStatus="loop">
-                    <a href="perfil.jsp?nick=${noAmigo.nick}"
-                       class="list-group-item list-group-item-action">${noAmigo.nick}</a>
-                </c:forEach>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Email</label>
+            <div class="col-sm-10">
+                <p class="form-control-static"><%=emailAmistad%></p>
             </div>
+
         </div>
-        <div class="col-xs-3">
-            <div class="list-group">
-                <!-- TODO, mostrar las peticiones de amistad que tiene el usuario, tabla relaciones -->
-                <a href="#" class="list-group-item active">Peticiones de amistad</a>
-                <c:forEach var="peticion" items="${listaPeticionesAmistad}" varStatus="loop">
-                    <a href="perfil.jsp?nick=${peticion.nick}"
-                       class="list-group-item list-group-item-action">${peticion.nick}</a>
-                </c:forEach>
+        <input type="hidden" name="nickAmigo" value="<%=nickAmistad%>">
 
-            </div>
-        </div>
-    </div>
+        <%=botonAmistad%>
 
-
-
+    </form>
 </div><!-- /.container -->
 
 

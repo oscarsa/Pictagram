@@ -73,8 +73,10 @@ public class AmistadesServlet extends HttpServlet {
             UsuarioDAO usuarioDAO = new UsuarioDAO(ds);
             ArrayList<UsuarioVO> amigos = usuarioDAO.obtenerAmigos(nick);
             ArrayList<UsuarioVO> noAmigos = usuarioDAO.obtenerNoAmigos(nick);
+            ArrayList<UsuarioVO> peticionesAmistad = usuarioDAO.obtenerPeticionesAmigos(nick);
             request.setAttribute("listaAmigos",amigos);
             request.setAttribute("listaNoAmigos",noAmigos);
+            request.setAttribute("listaPeticionesAmistad",peticionesAmistad);
             request.getRequestDispatcher("/WEB-INF/amistades.jsp").forward(request,response);
 
         }
