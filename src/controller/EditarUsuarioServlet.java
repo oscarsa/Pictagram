@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by oscar on 25/04/17.
+ * Creado por Óscar Saboya e Ían Avila el 25/04/17.
  */
 @WebServlet(name = "EditarUsuarioServlet")
 public class EditarUsuarioServlet extends HttpServlet {

@@ -1,7 +1,7 @@
 package model;
 
 /**
- * Created by oscar on 28/03/17.
+ * Creado por Óscar Saboya e Ían Ávila el 28/03/17.
  */
 public class UsuarioVO {
     private String nick;

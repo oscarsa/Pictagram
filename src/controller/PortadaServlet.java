@@ -20,7 +20,7 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 
 /**
- * Created by oscar on 3/05/17.
+ * Creado por Óscar Saboya e Ían Avila el 25/04/17.
  */
 @WebServlet(name = "PortadaServlet")
 public class PortadaServlet extends HttpServlet {

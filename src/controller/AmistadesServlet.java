@@ -21,7 +21,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
- * Created by oscar on 18/05/17.
+ * Creado por Óscar Saboya e Ían Ávila el 18/05/17.
  */
 @WebServlet(name = "AmistadesServlet")
 public class AmistadesServlet extends HttpServlet {

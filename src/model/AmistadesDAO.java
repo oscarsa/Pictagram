@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by oscar on 25/05/17.
+ * Creado por Óscar Saboya e Ían Ávila el  25/05/17.
  */
 public class AmistadesDAO {
 

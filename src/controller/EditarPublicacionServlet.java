@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 /**
- * Created by oscar on 17/05/17.
+ * Creado por Óscar Saboya e Ían Ávila el  17/05/17.
  */
 @WebServlet(name = "EditarPublicacionServlet")
 public class EditarPublicacionServlet extends HttpServlet {

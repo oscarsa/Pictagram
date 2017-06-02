@@ -20,8 +20,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by oscar on 25/03/17.
+ * Creado por Óscar Saboya e Ían Ávila el 25/03/17.
  */
+
 @WebServlet(name = "RegistroServlet")
 public class RegistroServlet extends HttpServlet {
 
